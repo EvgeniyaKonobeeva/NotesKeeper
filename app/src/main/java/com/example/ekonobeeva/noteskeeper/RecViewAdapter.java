@@ -12,13 +12,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.ekonobeeva.noteskeeper.Helper.IDragListener;
+import com.example.ekonobeeva.noteskeeper.Helper.IntItemTouchHelperAdapter;
+
 import java.util.ArrayList;
 
 /**
  * Created by e.konobeeva on 20.09.2016.
  */
-public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements IntItemTouchHelperAdapter{
+public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements IntItemTouchHelperAdapter {
     private final static String TAG = "RecViewAdapter";
+
     private ArrayList<String> cards;
     private Context context;
     private IDragListener dragListener;
@@ -33,8 +37,7 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder");
         final CardViewHolder cvh = (CardViewHolder)holder;
-        cvh.cardView.removeAllViews();
-        cvh.cardView.addView(setTextToCardView(cards.get(position)));
+        setTextToCardView(cvh.cardView, cards.get(position));
         cvh.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -49,7 +52,7 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder");
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view, null);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view2, null);
         return new CardViewHolder(itemView);
     }
 
@@ -90,7 +93,7 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         CardView card = new CardView(context);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
         params.setMargins(8,8,8,8);
@@ -98,9 +101,9 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         card.setRadius(9);
 
-        card.setContentPadding(15, 15, 15, 15);
+        card.setContentPadding(8, 8, 8, 8);
 
-        card.setCardBackgroundColor(Color.parseColor("#FFC6D6C3"));
+        card.setCardBackgroundColor(Color.parseColor("#ffc0cb"));
 
         card.setMaxCardElevation(15);
 
@@ -108,7 +111,7 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return card;
     }
 
-    protected TextView setTextView(String text){
+    protected TextView setTextView( String text){
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -122,7 +125,7 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return tv;
     }
 
-    protected TextView setTextToCardView(String text){
+    protected void setTextToCardView(CardView card, String text){
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -134,12 +137,14 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         tv.setTextColor(Color.BLACK);
         if(text.length() < 5){
             tv.setTextSize(50);
-        }else if(text.length() < 36){
+        }else if(text.length() < 40){
+            Log.d(TAG, "15");
             tv.setTextSize(30);
         }else{
+            Log.d(TAG, ">15");
             tv.setTextSize(20);
         }
-        return tv;
+        card.addView(tv);
     }
 
 }

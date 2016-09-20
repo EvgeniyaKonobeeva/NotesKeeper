@@ -1,4 +1,4 @@
-package com.example.ekonobeeva.noteskeeper;
+package com.example.ekonobeeva.noteskeeper.Helper;
 
 /**
  * Created by e.konobeeva on 20.09.2016.

@@ -1,4 +1,4 @@
-package com.example.ekonobeeva.noteskeeper;
+package com.example.ekonobeeva.noteskeeper.Helper;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;

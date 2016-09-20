@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.ekonobeeva.noteskeeper.SizedCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardUseCompatPadding="true"
-    android:layout_marginBottom="10dp"
-    app:cardCornerRadius="8px"
-    android:background="@color/cardBackground">
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    app:cardBackgroundColor="@color/cardBackgroundColor"
+    app:cardCornerRadius="@dimen/cardRadiusCorner"
+    app:cardElevation="@dimen/cardElevation"
+
+    app:contentPadding="@dimen/contentPadding"
+    app:cardUseCompatPadding="true">
     <TextView
-        android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
-        android:textSize="30dp"
-        android:typeface="monospace"/>
+        android:id="@+id/text_view"
+        android:maxLines="@integer/maxLines"
+        android:typeface="monospace"
+        android:textColor="@color/textColor"/>
 
-</android.support.v7.widget.CardView>
+</com.example.ekonobeeva.noteskeeper.SizedCardView>

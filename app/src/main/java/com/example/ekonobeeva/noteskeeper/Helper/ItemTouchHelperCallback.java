@@ -3,6 +3,8 @@ package com.example.ekonobeeva.noteskeeper.Helper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
+import com.example.ekonobeeva.noteskeeper.RecViewAdapter;
+
 /**
  * Created by e.konobeeva on 20.09.2016.
  */
@@ -47,5 +49,18 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onMoved(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, int fromPos, RecyclerView.ViewHolder target, int toPos, int x, int y) {
         adapter.onMoveItem(fromPos, toPos);
         //super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y);
+    }
+
+    @Override
+    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+        super.onSelectedChanged(viewHolder, actionState);
+        if(viewHolder != null)
+            ((RecViewAdapter.CardViewHolder)viewHolder).onItemSelected();
+    }
+
+    @Override
+    public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        super.clearView(recyclerView, viewHolder);
+        ((RecViewAdapter.CardViewHolder)viewHolder).onItemDropped();
     }
 }

@@ -1,44 +1,43 @@
 package com.example.ekonobeeva.noteskeeper;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.ekonobeeva.noteskeeper.Helper.IDragListener;
 import com.example.ekonobeeva.noteskeeper.Helper.IntItemTouchHelperAdapter;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 /**
  * Created by e.konobeeva on 20.09.2016.
  */
-public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements IntItemTouchHelperAdapter {
+public class RecViewAdapter extends RecyclerView.Adapter<RecViewAdapter.CardViewHolder> implements IntItemTouchHelperAdapter {
     private final static String TAG = "RecViewAdapter";
 
     private ArrayList<String> cards;
     private Context context;
     private IDragListener dragListener;
+    private RecyclerView recyclerView;
+    private int recWidth;
 
-    public RecViewAdapter(Context context, IDragListener dragListener){
+
+    public RecViewAdapter(Context context, IDragListener dragListener, RecyclerView recyclerView){
         this.context = context;
         this.dragListener = dragListener;
+        this.recyclerView = recyclerView;
     }
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(CardViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder");
         final CardViewHolder cvh = (CardViewHolder)holder;
         setTextView(cvh.cardView, cvh.textView, cards.get(position));
@@ -53,7 +52,7 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder");
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view, null);
         return new CardViewHolder(itemView);
@@ -80,6 +79,28 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.cards = list;
     }
 
+
+    protected void setTextView(CardView cardView, TextView textView, String text){
+        if(text.length() < 3){
+            textView.setTextSize(60);
+        }else if(text.length() < 20){
+            textView.setTextSize(40);
+        }else {
+            textView.setTextSize(20);
+        }
+        cardView.removeAllViews();
+        cardView.addView(textView);
+
+        TextPaint textPaint = textView.getPaint();
+        CharSequence t = TextUtils.ellipsize(text, textPaint, computeActualLength(cardView, textView), TextUtils.TruncateAt.END);
+        Log.d(TAG, "received string " + t.toString());
+        textView.setText(t);
+
+
+        cardView.removeAllViews();
+        cardView.addView(textView);
+    }
+
     public class CardViewHolder extends RecyclerView.ViewHolder{
         CardView cardView;
         TextView textView;
@@ -89,25 +110,48 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             textView = (TextView)itemView.findViewById(R.id.text_view);
         }
 
+        public void onItemSelected(){
+            cardView.setCardBackgroundColor(context.getResources().getColor(R.color.cardBackgroundColor2));
 
-    }
-
-
-    protected void setTextView(CardView cardView, TextView textView, String text){
-//        TextPaint textPaint = textView.getPaint();
-        textView.setText(text);
-//        float avail = textView.getMeasuredWidth();
-//        CharSequence t = TextUtils.ellipsize(text, textPaint, avail, TextUtils.TruncateAt.END);
-//        textView.setText(t);
-        if(text.length() < 3){
-            textView.setTextSize(60);
-        }else if(text.length() < 15){
-            textView.setTextSize(40);
-        }else {
-            textView.setTextSize(20);
         }
-        cardView.removeAllViews();
-        cardView.addView(textView);
+        public void onItemDropped(){
+            cardView.setCardBackgroundColor(context.getResources().getColor(R.color.cardBackgroundColor));
+        }
+
+
     }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        Log.d(TAG, "onAttachedToRecyclerView");
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onViewAttachedToWindow(CardViewHolder holder) {
+        Log.d(TAG, "onViewAttachedToWindow " + holder.cardView.getMeasuredWidth());
+        recWidth = recyclerView.getMeasuredWidth()/2 - context.getResources().getDimensionPixelOffset(R.dimen.activity_horizontal_margin);
+        super.onViewAttachedToWindow(holder);
+    }
+
+    protected int dpToPx(float dp){
+        float density = context.getResources().getDisplayMetrics().density;
+        return (int)(Math.abs(dp)*density);
+    }
+
+    public float computeActualLength(CardView cardView, TextView textView){
+        float lineH = textView.getLineHeight();
+        int cardH = 700;
+        int countLines = (cardH-dpToPx(2*2))/(int)lineH - 1;
+        int width = 300 - dpToPx(2*2);
+        float totalMaxTextWidth = width*countLines;
+        Log.d(TAG, "lineWidth " + totalMaxTextWidth);
+        return totalMaxTextWidth;
+
+    }
+
+
+
+
 
 }

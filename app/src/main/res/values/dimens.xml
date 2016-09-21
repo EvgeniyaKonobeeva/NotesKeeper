@@ -4,8 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <!--card view params-->
     <dimen name="cardRadiusCorner">5dp</dimen>
-    <dimen name="cardElevation">3dp</dimen>
-    <dimen name="contentPadding">4dp</dimen>
+    <dimen name="cardElevation">2dp</dimen>
+    <dimen name="contentPadding">8px</dimen>
     <!--text view params-->
     <integer name="maxLines">8</integer>
 </resources>

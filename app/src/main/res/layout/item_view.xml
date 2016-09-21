@@ -9,15 +9,16 @@
     app:cardBackgroundColor="@color/cardBackgroundColor"
     app:cardCornerRadius="@dimen/cardRadiusCorner"
     app:cardElevation="@dimen/cardElevation"
-
     app:contentPadding="@dimen/contentPadding"
     app:cardUseCompatPadding="true">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text_view"
         android:maxLines="@integer/maxLines"
         android:typeface="monospace"
-        android:textColor="@color/textColor"/>
+        android:textColor="@color/textColor"
+        android:textStyle="normal" />
 
 </com.example.ekonobeeva.noteskeeper.SizedCardView>

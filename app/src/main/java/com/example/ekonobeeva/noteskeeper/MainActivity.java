@@ -27,9 +27,9 @@ public class MainActivity extends AppCompatActivity implements IDragListener {
         texts.add("blablabla bla bla ble    5   blu blo lbgflflf");
         texts.add("blablabla bla bla ble    6   blu blo lbgflflf blablabla bla bla ble    4   blu blo lbgflflf blablabla bla bla ble blablabla bla bla ble    4   blu blo lbgflflf blablabla bla bla ble");
 
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-
-        RecViewAdapter adapter = new RecViewAdapter(getApplicationContext(), this);
+        RecViewAdapter adapter = new RecViewAdapter(getApplicationContext(), this, recyclerView );
         adapter.setAdapterItemList(texts);
 
         itemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback(adapter));
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements IDragListener {
         StaggeredGridLayoutManager layoutMan = new StaggeredGridLayoutManager(SPAN_COUNT_PORTRAIT, StaggeredGridLayoutManager.VERTICAL);
 
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutMan);
         itemTouchHelper.attachToRecyclerView(recyclerView);

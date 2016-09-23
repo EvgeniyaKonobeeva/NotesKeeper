@@ -27,4 +27,5 @@ public class SizedCardView extends CardView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
+
 }

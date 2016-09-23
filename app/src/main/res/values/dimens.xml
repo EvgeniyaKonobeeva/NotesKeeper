@@ -8,4 +8,7 @@
     <dimen name="contentPadding">8px</dimen>
     <!--text view params-->
     <integer name="maxLines">8</integer>
+    <integer name="textViewPadding">4</integer>
+    <integer name="imageViewMaxHeight">500</integer>
+
 </resources>

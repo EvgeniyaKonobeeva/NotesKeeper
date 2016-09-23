@@ -1,14 +1,15 @@
 package com.example.ekonobeeva.noteskeeper;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextPaint;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.ekonobeeva.noteskeeper.Helper.IDragListener;
@@ -19,41 +20,39 @@ import java.util.ArrayList;
 /**
  * Created by e.konobeeva on 20.09.2016.
  */
-public class RecViewAdapter extends RecyclerView.Adapter<RecViewAdapter.CardViewHolder> implements IntItemTouchHelperAdapter {
+public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements IntItemTouchHelperAdapter {
     private final static String TAG = "RecViewAdapter";
+    private final static int EMPTY_VIEW = 0;
+    private final static int FILLED_VIEW = 1;
 
-    private ArrayList<String> cards;
+    private ArrayList<Object> cards;
     private Context context;
     private IDragListener dragListener;
-    private RecyclerView recyclerView;
-    private int recWidth;
 
-
-    public RecViewAdapter(Context context, IDragListener dragListener, RecyclerView recyclerView){
+    public RecViewAdapter(Context context, IDragListener dragListener){
         this.context = context;
         this.dragListener = dragListener;
-        this.recyclerView = recyclerView;
     }
 
 
     @Override
-    public void onBindViewHolder(CardViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder");
-        final CardViewHolder cvh = (CardViewHolder)holder;
-        setTextView(cvh.cardView, cvh.textView, cards.get(position));
-        cvh.cardView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                dragListener.onDragStarted(cvh);
-                return false;
-            }
-        });
-
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        //Log.d(TAG, "onBindViewHolder");
+        if(holder instanceof CardViewHolder) {
+            setCardContent((CardViewHolder) holder, cards.get(position));
+            ((CardViewHolder) holder).cardView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    dragListener.onDragStarted(holder);
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
-    public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder");
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        //Log.d(TAG, "onCreateViewHolder");
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view, null);
         return new CardViewHolder(itemView);
     }
@@ -64,10 +63,11 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecViewAdapter.CardView
     }
 
     @Override
-    public void onMoveItem(int fromPos, int toPos) {
-        String card = cards.remove(fromPos);
-        cards.add(toPos, card);
-        notifyItemMoved(fromPos, toPos);
+    public void onMoveItem(int fromPos, int toPos, RecyclerView.ViewHolder holder, RecyclerView.ViewHolder target) {
+//        setCardContent((CardViewHolder) holder, cards.get(toPos));
+//        //setCardContent((CardViewHolder)target, cards.get(fromPos));
+//        notifyItemMoved(fromPos, toPos);
+
     }
 
     @Override
@@ -75,39 +75,79 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecViewAdapter.CardView
 
     }
 
+    @Override
+    public int getItemViewType(int position) {
+
+//        if(cards.get(position) == null){
+//            return EMPTY_VIEW;
+//        }
+        return FILLED_VIEW;
+    }
+
     public void setAdapterItemList(ArrayList list){
-        this.cards = list;
+        this.cards = new ArrayList<>();
+        this.cards.addAll(list);
+//        for(int i = 0; i < 15; i++ ){
+//            cards.add(new Object());
+//        }
     }
 
 
-    protected void setTextView(CardView cardView, TextView textView, String text){
-        if(text.length() < 3){
-            textView.setTextSize(60);
-        }else if(text.length() < 20){
-            textView.setTextSize(40);
-        }else {
-            textView.setTextSize(20);
+    protected void setTextContent(CardView cardView, Object obj){
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        TextView tv = setTextView();
+        tv.setText((String)obj);
+        cardView.removeAllViews();
+        cardView.addView(tv, params);
+
+    }
+
+    protected void setImageContent(CardView cardView, Object obj){
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ImageView imv = setImageView();
+        imv.setImageBitmap(resizeBitmap((Bitmap) obj));
+        cardView.removeAllViews();
+        cardView.addView(imv, params);
+
+    }
+
+    protected void setCardContent(CardViewHolder holder, Object obj){
+        if(obj instanceof String){
+            setTextContent(holder.cardView, obj);
+        }else if(obj instanceof Bitmap){
+            setImageContent(holder.cardView, obj);
         }
-        cardView.removeAllViews();
-        cardView.addView(textView);
+    }
 
-        TextPaint textPaint = textView.getPaint();
-        CharSequence t = TextUtils.ellipsize(text, textPaint, computeActualLength(cardView, textView), TextUtils.TruncateAt.END);
-        Log.d(TAG, "received string " + t.toString());
-        textView.setText(t);
+    protected Bitmap resizeBitmap(Bitmap bitmap){
+        int maxCardHeight = context.getResources().getInteger(R.integer.imageViewMaxHeight);
+        if(bitmap.getHeight()> maxCardHeight){
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 500, 500, true);
+            return resizedBitmap;
+        }
+        return bitmap;
+    }
 
-
-        cardView.removeAllViews();
-        cardView.addView(textView);
+    protected TextView setTextView(){
+        TextView tv = new TextView(context);
+        tv.setTypeface(Typeface.MONOSPACE);
+        tv.setTextColor(context.getResources().getColor(R.color.textColor));
+        int padding = context.getResources().getInteger(R.integer.textViewPadding);
+        tv.setPadding(padding, padding, padding, padding);
+        return tv;
+    }
+    protected ImageView setImageView(){
+        ImageView imv = new ImageView(context);
+        imv.setMaxHeight(context.getResources().getInteger(R.integer.imageViewMaxHeight));
+        imv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        return imv;
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder{
         CardView cardView;
-        TextView textView;
         public CardViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView)itemView;
-            textView = (TextView)itemView.findViewById(R.id.text_view);
         }
 
         public void onItemSelected(){
@@ -121,35 +161,11 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecViewAdapter.CardView
 
     }
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        Log.d(TAG, "onAttachedToRecyclerView");
-        super.onAttachedToRecyclerView(recyclerView);
+    public class EmptyCeilHolder extends RecyclerView.ViewHolder{
+        public EmptyCeilHolder(View itemView) {
+            super(itemView);
+        }
     }
-
-    @Override
-    public void onViewAttachedToWindow(CardViewHolder holder) {
-        Log.d(TAG, "onViewAttachedToWindow " + holder.cardView.getMeasuredWidth());
-        recWidth = recyclerView.getMeasuredWidth()/2 - context.getResources().getDimensionPixelOffset(R.dimen.activity_horizontal_margin);
-        super.onViewAttachedToWindow(holder);
-    }
-
-    protected int dpToPx(float dp){
-        float density = context.getResources().getDisplayMetrics().density;
-        return (int)(Math.abs(dp)*density);
-    }
-
-    public float computeActualLength(CardView cardView, TextView textView){
-        float lineH = textView.getLineHeight();
-        int cardH = 700;
-        int countLines = (cardH-dpToPx(2*2))/(int)lineH - 1;
-        int width = 300 - dpToPx(2*2);
-        float totalMaxTextWidth = width*countLines;
-        Log.d(TAG, "lineWidth " + totalMaxTextWidth);
-        return totalMaxTextWidth;
-
-    }
-
 
 
 

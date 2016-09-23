@@ -9,6 +9,8 @@ import com.example.ekonobeeva.noteskeeper.RecViewAdapter;
  * Created by e.konobeeva on 20.09.2016.
  */
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
+    int dragFrom = -1;
+    int dragTo = -1;
 
     private IntItemTouchHelperAdapter adapter;
 
@@ -47,8 +49,11 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onMoved(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, int fromPos, RecyclerView.ViewHolder target, int toPos, int x, int y) {
-        adapter.onMoveItem(fromPos, toPos);
-        //super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y);
+        //adapter.onMoveItem(fromPos, toPos, viewHolder, target);
+        if(dragFrom == -1){
+            dragFrom = fromPos;
+        }
+        dragTo = toPos;
     }
 
     @Override
@@ -62,5 +67,9 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
         ((RecViewAdapter.CardViewHolder)viewHolder).onItemDropped();
+//        adapter.onMoveItem(dragFrom,dragTo, viewHolder, viewHolder);
+        dragFrom = -1;
+        dragTo = -1;
+
     }
 }

@@ -1,5 +1,7 @@
 package com.example.ekonobeeva.noteskeeper;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -19,22 +21,29 @@ public class MainActivity extends AppCompatActivity implements IDragListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<String> texts = new ArrayList<>();
-        texts.add("bla 1");
-        texts.add("blablabla bla bla ble");
-        texts.add("blablabla bla bla ble    3   blu blo lbgflflf blablabla bla bla ble");
-        texts.add("blablabla bla bla ble    4   blu blo lbgflflf blablabla bla bla ble");
-        texts.add("blablabla bla bla ble    5   blu blo lbgflflf");
-        texts.add("blablabla bla bla ble    6   blu blo lbgflflf blablabla bla bla ble    4   blu blo lbgflflf blablabla bla bla ble blablabla bla bla ble    4   blu blo lbgflflf blablabla bla bla ble");
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.picture_w3555_h690);
+        Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+        Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.picture_w384_h549);
+
+        ArrayList<Object> texts = new ArrayList<>();
+        texts.add("0");
+        texts.add("1");
+        texts.add("2");
+        texts.add("3");
+//        texts.add("4");
+//        texts.add("5");
+//        texts.add("6");
+//        texts.add("7");
+
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        RecViewAdapter adapter = new RecViewAdapter(getApplicationContext(), this, recyclerView );
+        RecViewAdapter adapter = new RecViewAdapter(getApplicationContext(), this);
         adapter.setAdapterItemList(texts);
 
         itemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback(adapter));
 
-        StaggeredGridLayoutManager layoutMan = new StaggeredGridLayoutManager(SPAN_COUNT_PORTRAIT, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager layoutMan = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
 
 

@@ -6,6 +6,25 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="textStyle">@style/TextStyle</item>
+        <item name="imgStyle">@style/ImgStyle</item>
+
     </style>
 
+    <!--ImageView style-->
+    <style name="ImgStyle" parent="Base.Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
+
+    <!--TextView style-->
+    <style name="TextStyle" parent="Base.V7.Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:maxLines">@integer/maxLines</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:padding">@dimen/contentPadding</item>
+    </style>
 </resources>

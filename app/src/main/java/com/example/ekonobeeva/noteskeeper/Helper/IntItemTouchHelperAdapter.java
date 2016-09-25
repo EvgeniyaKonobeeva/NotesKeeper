@@ -8,4 +8,5 @@ import android.support.v7.widget.RecyclerView;
 public interface IntItemTouchHelperAdapter {
     void onMoveItem(int fromPos, int toPos, RecyclerView.ViewHolder holder, RecyclerView.ViewHolder target);
     void onRemoveItem();
+    void onRealMove(int fromPos, int toPos);
 }

@@ -26,10 +26,10 @@ public class MainActivity extends AppCompatActivity implements IDragListener {
         Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.picture_w384_h549);
 
         ArrayList<Object> texts = new ArrayList<>();
-        texts.add("0");
-        texts.add("1");
-        texts.add("2");
-        texts.add("3");
+        texts.add("0\n\n");
+        texts.add("1\n\n");
+        texts.add("2\n\n");
+        texts.add("3\n\n");
 //        texts.add("4");
 //        texts.add("5");
 //        texts.add("6");
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements IDragListener {
 
         itemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback(adapter));
 
-        StaggeredGridLayoutManager layoutMan = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager layoutMan = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
 
 
 

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +17,20 @@ import com.example.ekonobeeva.noteskeeper.Helper.IDragListener;
 import com.example.ekonobeeva.noteskeeper.Helper.IntItemTouchHelperAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by e.konobeeva on 20.09.2016.
  */
 public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements IntItemTouchHelperAdapter {
     private final static String TAG = "RecViewAdapter";
-    private final static int EMPTY_VIEW = 0;
+//    private final static int EMPTY_VIEW = 0;
     private final static int FILLED_VIEW = 1;
 
     private ArrayList<Object> cards;
     private Context context;
     private IDragListener dragListener;
+    private int prevPos = -1;
 
     public RecViewAdapter(Context context, IDragListener dragListener){
         this.context = context;
@@ -64,9 +67,39 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onMoveItem(int fromPos, int toPos, RecyclerView.ViewHolder holder, RecyclerView.ViewHolder target) {
-//        setCardContent((CardViewHolder) holder, cards.get(toPos));
-//        //setCardContent((CardViewHolder)target, cards.get(fromPos));
+        if(prevPos == -1){
+            Log.d(TAG, "fromPos = " + fromPos);
+            Log.d(TAG, "prevPos1 = -1 ");
+            Log.d(TAG, "currPos1 = " + toPos);
+            prevPos = toPos;
+            notifyItemMoved(toPos, fromPos);
+        }else {
+            Log.d(TAG, "fromPos2 = " + fromPos);
+            Log.d(TAG, "prevPos2 = " + prevPos);
+            Log.d(TAG, "currPos2 = " + toPos);
+            if(toPos < prevPos){ // up
+                notifyItemMoved(fromPos, prevPos+1);
+            }else{ // down
+                notifyItemMoved(fromPos, prevPos-1);
+            }
+
+            prevPos = toPos;
+            notifyItemMoved(toPos, fromPos);
+        }
+    }
+
+    @Override
+    public void onRealMove(int fromPos, int toPos) {
+
+        prevPos = -1;
+//        notifyItemInserted(fromPos);
 //        notifyItemMoved(fromPos, toPos);
+//        if(toPos < fromPos){
+//            notifyItemMoved(toPos+1, fromPos);
+//        }else{
+//            notifyItemMoved(toPos-1, fromPos);
+//        }
+
 
     }
 

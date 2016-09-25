@@ -6,6 +6,7 @@
     <dimen name="cardRadiusCorner">5dp</dimen>
     <dimen name="cardElevation">2dp</dimen>
     <dimen name="contentPadding">8px</dimen>
+    <dimen name="maxCardViewHeight">700px</dimen>
     <!--text view params-->
     <integer name="maxLines">8</integer>
     <integer name="textViewPadding">4</integer>

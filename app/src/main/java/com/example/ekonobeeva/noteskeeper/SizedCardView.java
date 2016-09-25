@@ -8,7 +8,6 @@ import android.util.AttributeSet;
  * Created by Evgenia on 20.09.2016.
  */
 public class SizedCardView extends CardView {
-    private final static int MAX_SIZE = 500;
     public SizedCardView(Context context) {
         super(context);
     }
@@ -23,7 +22,7 @@ public class SizedCardView extends CardView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(MAX_SIZE, MeasureSpec.AT_MOST);
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec((int)this.getResources().getDimension(R.dimen.maxCardViewHeight), MeasureSpec.AT_MOST);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 

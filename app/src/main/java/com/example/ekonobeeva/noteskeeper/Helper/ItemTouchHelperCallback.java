@@ -2,6 +2,7 @@ package com.example.ekonobeeva.noteskeeper.Helper;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 
 import com.example.ekonobeeva.noteskeeper.RecViewAdapter;
 
@@ -9,6 +10,7 @@ import com.example.ekonobeeva.noteskeeper.RecViewAdapter;
  * Created by e.konobeeva on 20.09.2016.
  */
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
+    private final static String  TAG = "ItemTouchHelperCallback";
     int dragFrom = -1;
     int dragTo = -1;
 
@@ -49,10 +51,12 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onMoved(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, int fromPos, RecyclerView.ViewHolder target, int toPos, int x, int y) {
-        //adapter.onMoveItem(fromPos, toPos, viewHolder, target);
+
         if(dragFrom == -1){
             dragFrom = fromPos;
         }
+        Log.d(TAG, "onMoved ");
+        adapter.onMoveItem(dragFrom, toPos, viewHolder, target);
         dragTo = toPos;
     }
 
@@ -67,7 +71,12 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
         ((RecViewAdapter.CardViewHolder)viewHolder).onItemDropped();
-//        adapter.onMoveItem(dragFrom,dragTo, viewHolder, viewHolder);
+        if(dragTo != -1 && dragFrom != -1 && dragFrom != dragTo) {
+            adapter.onRealMove(dragFrom, dragTo);
+            Log.d(TAG, "item pos " + viewHolder.getAdapterPosition());
+            Log.d(TAG, "drag from " + dragFrom);
+            Log.d(TAG, "drag to " + dragTo);
+        }
         dragFrom = -1;
         dragTo = -1;
 

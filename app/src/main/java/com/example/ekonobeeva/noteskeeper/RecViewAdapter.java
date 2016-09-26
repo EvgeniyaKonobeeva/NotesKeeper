@@ -67,38 +67,55 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onMoveItem(int fromPos, int toPos, RecyclerView.ViewHolder holder, RecyclerView.ViewHolder target) {
-        if(prevPos == -1){
-            Log.d(TAG, "fromPos = " + fromPos);
-            Log.d(TAG, "prevPos1 = -1 ");
-            Log.d(TAG, "currPos1 = " + toPos);
-            prevPos = toPos;
-            notifyItemMoved(toPos, fromPos);
-        }else {
-            Log.d(TAG, "fromPos2 = " + fromPos);
-            Log.d(TAG, "prevPos2 = " + prevPos);
-            Log.d(TAG, "currPos2 = " + toPos);
-            if(toPos < prevPos){ // up
-                notifyItemMoved(fromPos, prevPos+1);
-            }else{ // down
-                notifyItemMoved(fromPos, prevPos-1);
-            }
+//        if(prevPos == -1){
+//            Log.d(TAG, "fromPos = " + fromPos);
+//            Log.d(TAG, "prevPos1 = -1 ");
+//            Log.d(TAG, "currPos1 = " + toPos);
+//            prevPos = toPos;
+//            notifyItemMoved(toPos, fromPos);
+//        }else {
+//            Log.d(TAG, "fromPos2 = " + fromPos);
+//            Log.d(TAG, "prevPos2 = " + prevPos);
+//            Log.d(TAG, "currPos2 = " + toPos);
+//            if(toPos < prevPos){ // up
+//                if(prevPos -1 != -1) {
+//                    notifyItemMoved(fromPos, prevPos - 1);
+//                }
+//            }else{ // down
+//                if(prevPos +1 != 4){
+//                    notifyItemMoved(fromPos, prevPos+1);
+//                }
+//            }
+//
+//            prevPos = toPos;
+////            notifyItemMoved(toPos, fromPos);
+//        }
 
-            prevPos = toPos;
-            notifyItemMoved(toPos, fromPos);
-        }
+        //notifyItemInserted(fromPos);
+//        Log.d(TAG, "fromPos = " + fromPos);
+//        Log.d(TAG, "toPos = " + toPos);
+//        notifyItemMoved(fromPos, toPos);
+//        if(toPos < fromPos){
+//            Log.d(TAG, "up");
+//            notifyItemMoved(toPos+1, fromPos);
+//        }else{
+//            Log.d(TAG, "down");
+//            notifyItemMoved(toPos-1, fromPos);
+//        }
+//        notifyItemMoved(fromPos, toPos);
     }
 
     @Override
     public void onRealMove(int fromPos, int toPos) {
 
-        prevPos = -1;
-//        notifyItemInserted(fromPos);
-//        notifyItemMoved(fromPos, toPos);
-//        if(toPos < fromPos){
-//            notifyItemMoved(toPos+1, fromPos);
-//        }else{
-//            notifyItemMoved(toPos-1, fromPos);
-//        }
+        //prevPos = -1;
+        notifyItemMoved(fromPos, toPos);
+
+        if(toPos < fromPos){
+            notifyItemMoved(toPos+1, fromPos);
+        }else{
+            notifyItemMoved(toPos-1, fromPos);
+        }
 
 
     }

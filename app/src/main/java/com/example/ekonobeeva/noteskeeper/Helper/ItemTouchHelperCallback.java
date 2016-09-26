@@ -56,7 +56,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
             dragFrom = fromPos;
         }
         Log.d(TAG, "onMoved ");
-        adapter.onMoveItem(dragFrom, toPos, viewHolder, target);
+        adapter.onMoveItem(fromPos, toPos, viewHolder, target);
         dragTo = toPos;
     }
 

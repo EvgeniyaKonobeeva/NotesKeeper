@@ -52,9 +52,10 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onMoved(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, int fromPos, RecyclerView.ViewHolder target, int toPos, int x, int y) {
 
-        if(dragFrom == -1){
-            dragFrom = fromPos;
-        }
+//        if(dragFrom == -1){
+//            dragFrom = fromPos;
+//        }
+        dragFrom = fromPos;
         Log.d(TAG, "onMoved ");
         adapter.onMoveItem(fromPos, toPos, viewHolder, target);
         dragTo = toPos;
@@ -72,7 +73,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         super.clearView(recyclerView, viewHolder);
         ((RecViewAdapter.CardViewHolder)viewHolder).onItemDropped();
         if(dragTo != -1 && dragFrom != -1 && dragFrom != dragTo) {
-            adapter.onRealMove(dragFrom, dragTo);
+//            adapter.onRealMove(dragFrom, dragTo);
             Log.d(TAG, "item pos " + viewHolder.getAdapterPosition());
             Log.d(TAG, "drag from " + dragFrom);
             Log.d(TAG, "drag to " + dragTo);

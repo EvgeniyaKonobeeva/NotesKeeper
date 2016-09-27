@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -26,20 +27,18 @@ public class MainActivity extends AppCompatActivity implements IDragListener {
         Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.picture_w384_h549);
 
         ArrayList<Object> texts = new ArrayList<>();
-        texts.add("0\n\n");
-        texts.add("1\n\n");
-        texts.add("2\n\n");
-        texts.add("3\n\n");
-//        texts.add("4\n\n");
-//        texts.add("5\n\n");
-//        texts.add("6\n\n");
-//        texts.add("7\n\n");
+        for(int i = 0; i < 12; i++){
+            texts.add(i+"\n\n\n");
+        }
 
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         RecViewAdapter adapter = new RecViewAdapter(getApplicationContext(), this);
         adapter.setAdapterItemList(texts);
+        RecyclerView.ItemAnimator anim = new DefaultItemAnimator();
+        anim.setMoveDuration(500);
+//        recyclerView.setItemAnimator(anim);
 
         itemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback(adapter));
 
